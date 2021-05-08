@@ -243,3 +243,8 @@ Band 10 Block=256x256 Type=Float32, ColorInterp=Undefined
 mkdir mascara
 cd mascara
 wget https://storage.googleapis.com/gis2021-teledeteccion/tp-teledeteccion-2/images/mask_agri_aoi.tif
+
+# Chequeo proyeccion
+gdalinfo mask_agri_aoi.tif
+
+#ID["EPSG",4326]]
