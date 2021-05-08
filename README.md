@@ -47,7 +47,12 @@ calculo de áreas de cultivo de maíz y soja a partir de imágenes de satélites
 │           └── 0000000000-0000010496_ndvi.tif
 
 2- Creo layers nvdi
-├── run_ndvi.py
+python3 run_ndvi.py
 
 3- creo layers run_evi
- run_eva.py
+python3  run_evi.py
+
+4- concateno todos los nvdi en un solo file (muchos layers)
+python3 concat_ndvi.py
+5- concateno todos los evi en un solo file (muchos layers)
+python3 concat_evi.py
