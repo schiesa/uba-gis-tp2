@@ -6,7 +6,7 @@ Saenz Peña (Córdoba), General Roca (Córdoba) y General Villegas (Buenos Aires
 
 # Completar los datos
 
-1. Departamento/ Provincia
+- 1. Departamento/ Provincia
 Roque Saenz/ Peña Córdoba
 General Roca / Córdoba
 General Villegas/ Buenos Aires
@@ -14,15 +14,15 @@ General Villegas/ Buenos Aires
  Has. Maíz
  Has. Soja
 
-2. Mapa de las hectáreas sembradas con maíz y soja para cada uno de los partidos en
+- 2. Mapa de las hectáreas sembradas con maíz y soja para cada uno de los partidos en
 estos dos formatos (elegir al menos uno de cada ítem):
 a. Capa vectorial o ráster (la suma del área de las geometrías/pixeles debe
 corresponderse con los datos de la tabla)
 b. JPG o PDF
-3. Entregar un informe que incluya descripción metodológica y resultados, con una
+- 3. Entregar un informe que incluya descripción metodológica y resultados, con una
 discusión comparando las estrategias empleadas y qué cosas se podrían agregar en el
 futuro.
-4. Exponer los principales resultados en clase en una presentación (máximo 10 minutos).
+- 4. Exponer los principales resultados en clase en una presentación (máximo 10 minutos).
 
 
 calculo de áreas de cultivo de maíz y soja a partir de imágenes de satélites.
@@ -45,7 +45,7 @@ En caso de usar google cloud copio directamente de este bucket publico.
 En mi caso que trabajo en forma local. Descargo imagenes
 
 chmod a+x download-images.sh
-./download-images.sh
+- ./download-images.sh
 
 Carpetas creadas:
 
@@ -96,7 +96,7 @@ Carpetas creadas:
 
 # 2- Verifico sistema de coordenadas y layers de las imagenes descargadas.
 
-$ gdalinfo 0000000000-0000000000.tif
+- gdalinfo 0000000000-0000000000.tif
 Driver: GTiff/GeoTIFF
 Files: 0000000000-0000000000.tif
        0000000000-0000000000.tif.aux.xml
@@ -252,11 +252,11 @@ degrees
 # 3- Funcion ConcatenateImages:
 Ref: https://www.orfeo-toolbox.org/CookBook/Applications/app_ConcatenateImages.html
 
-3.1- Creo layers nvdi
+- 3.1- Creo layers nvdi
 
   python3 run_ndvi.py
 
-3.2- creo layers run_evi
+- 3.2- creo layers run_evi
 
   python3  run_evi.py
 
@@ -264,7 +264,7 @@ Ref: https://www.orfeo-toolbox.org/CookBook/Applications/app_ConcatenateImages.h
 
   python3 concat_ndvi.py
 
-#5- concateno todos los evi en un solo file (muchos layers)
+# 5- concateno todos los evi en un solo file (muchos layers)
 
   python3 concat_evi.py
 
@@ -274,7 +274,7 @@ mkdir mascara
 cd mascara
 wget https://storage.googleapis.com/gis2021-teledeteccion/tp-teledeteccion-2/images/mask_agri_aoi.tif
 
-# Chequeo proyeccion
+- Chequeo proyeccion
 gdalinfo mask_agri_aoi.tif
 
 #ID["EPSG",4326]]
