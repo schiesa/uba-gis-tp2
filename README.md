@@ -1,5 +1,30 @@
 # Uba-gis-tp2
 
+El objetivo de este trabajo práctico es estimar la cantidad
+de hectáreas sembradas con maíz y soja para la campaña 20/21 en los partido de Roque
+Saenz Peña (Córdoba), General Roca (Córdoba) y General Villegas (Buenos Aires).
+
+# Completar los datos
+
+1. Departamento/ Provincia
+Roque Saenz/ Peña Córdoba
+General Roca / Córdoba
+General Villegas/ Buenos Aires
+
+# Has. Maíz
+# Has. Soja
+
+2. Mapa de las hectáreas sembradas con maíz y soja para cada uno de los partidos en
+estos dos formatos (elegir al menos uno de cada ítem):
+a. Capa vectorial o ráster (la suma del área de las geometrías/pixeles debe
+corresponderse con los datos de la tabla)
+b. JPG o PDF
+3. Entregar un informe que incluya descripción metodológica y resultados, con una
+discusión comparando las estrategias empleadas y qué cosas se podrían agregar en el
+futuro.
+4. Exponer los principales resultados en clase en una presentación (máximo 10 minutos).
+
+
 calculo de áreas de cultivo de maíz y soja a partir de imágenes de satélites.
 
 #git clone https://github.com/schiesa/uba-gis-tp2.git
@@ -218,6 +243,11 @@ Band 10 Block=256x256 Type=Float32, ColorInterp=Undefined
 
 Tengo solo 10 bandas en ID["EPSG",4326]]
 
+CRS
+EPSG:4326 - WGS 84 - Geographic
+Unit
+degrees
+
 
 # 3- Funcion ConcatenateImages:
 Ref: https://www.orfeo-toolbox.org/CookBook/Applications/app_ConcatenateImages.html
@@ -239,9 +269,6 @@ Ref: https://www.orfeo-toolbox.org/CookBook/Applications/app_ConcatenateImages.h
   python3 concat_evi.py
 
 
-
-
-
 # Descargar mascara de cultivos Inta. En donde puedo descartar areas que no son de cultivos.
 mkdir mascara
 cd mascara
@@ -251,3 +278,12 @@ wget https://storage.googleapis.com/gis2021-teledeteccion/tp-teledeteccion-2/ima
 gdalinfo mask_agri_aoi.tif
 
 #ID["EPSG",4326]]
+
+# Descargar Verdad de Campo
+
+
+CRS
+EPSG:4326 - WGS 84 - Geographic
+Extent
+Unit
+degrees
