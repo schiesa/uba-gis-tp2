@@ -15,12 +15,14 @@ NDVI: (NIR-RED)/(NIR+RED) -> (B8-B4)/(B8+B4) -> (imb7-imb3)/(imb7+imb3)
 # 1- Descargo imagenes satelitales
 
 Bucket (~17 GB): gs://gis2021-teledeteccion/tp-teledeteccion-2/images/
-
-En forma local.
+En caso de usar google cloud copio directamente de este bucket publico.
+#gsutil cp gs://gis2021-teledeteccion/tp-teledeteccion-2/images/ .
+En mi caso que trabajo en forma local. Descargo imagenes
 
 chmod a+x download-images.sh
 ./download-images.sh
 
+Carpetas creadas:
 
 ├── 2020-10-01
 │   ├── 0000000000-0000000000_evi.tif
@@ -67,7 +69,7 @@ chmod a+x download-images.sh
 
 
 
-# 2- Verifico sistema de coordenadas y layers.
+# 2- Verifico sistema de coordenadas y layers de las imagenes descargadas.
 
 $ gdalinfo 0000000000-0000000000.tif
 Driver: GTiff/GeoTIFF
@@ -214,10 +216,11 @@ Band 10 Block=256x256 Type=Float32, ColorInterp=Undefined
     STATISTICS_STDDEV=0.067971671312658
     STATISTICS_VALID_PERCENT=67.26
 
-10 bandas en ID["EPSG",4326]]
+Tengo solo 10 bandas en ID["EPSG",4326]]
 
 
-# 3- Funcion ConcatenateImages: https://www.orfeo-toolbox.org/CookBook/Applications/app_ConcatenateImages.html
+# 3- Funcion ConcatenateImages:
+Ref: https://www.orfeo-toolbox.org/CookBook/Applications/app_ConcatenateImages.html
 
 3.1- Creo layers nvdi
 
@@ -239,7 +242,7 @@ Band 10 Block=256x256 Type=Float32, ColorInterp=Undefined
 
 
 
-# Descargar mascara de cultivos Inta.
+# Descargar mascara de cultivos Inta. En donde puedo descartar areas que no son de cultivos.
 mkdir mascara
 cd mascara
 wget https://storage.googleapis.com/gis2021-teledeteccion/tp-teledeteccion-2/images/mask_agri_aoi.tif
