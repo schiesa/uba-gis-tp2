@@ -41,7 +41,8 @@ NDVI: (NIR-RED)/(NIR+RED) -> (B8-B4)/(B8+B4) -> (imb7-imb3)/(imb7+imb3)
 
 Bucket (~17 GB): gs://gis2021-teledeteccion/tp-teledeteccion-2/images/
 En caso de usar google cloud copio directamente de este bucket publico.
-#gsutil cp gs://gis2021-teledeteccion/tp-teledeteccion-2/images/ .
+gsutil -m cp -r gs://gis2021-teledeteccion/tp-teledeteccion-2/images/* ~/tp-2/images/aoi/
+
 En mi caso que trabajo en forma local. Descargo imagenes
 
 chmod a+x download-images.sh
@@ -283,8 +284,14 @@ gdalinfo mask_agri_aoi.tif
 
 #ID["EPSG",4326]]
 
-# Descargar Verdad de Campo
+# Verdad de Campo
+Descargo verdad_de_campo.zip y descomprimo en una carpeta.
+veo el detalle de los puntos observados:
+ogrinfo -so verdad_campo.shp verdad_campo
 
+veo en que esta proyectado
+ID["EPSG",4326]]
+- ogrinfo -so ./verdad_campo/verdad_campo.shp verdad_campo
 
 CRS
 EPSG:4326 - WGS 84 - Geographic
@@ -292,10 +299,40 @@ Extent
 Unit
 degrees
 
+Reproyecto a otra proyeccion que este en metros para poder armar los buffers a 32721
+
+ogr2ogr -f "ESRI Shapefile" -s_srs EPSG:4326 -t_srs EPSG:32721 verdad_campo/verdad_campo_32721.shp verdad_campo/verdad_campo.shp
+
+Chequeo layer:
+ogrinfo -so  verdad_campo/verdad_campo_32721.shp verdad_campo_32721
+
+PROJCRS["WGS 84 / UTM zone 21S",
+    BASEGEOGCRS["WGS 84",
+        DATUM["World Geodetic System 1984",
+            ELLIPSOID["WGS 84",6378137,298.257223563,
+                LENGTHUNIT["metre",1]]],
+                ID["EPSG",32721]]
+
+En metros como queria!
+
+
+# Departamentos
+Descargo departamentos.zip y descomprimo.
+
+ogrinfo -so departamentos/departamentos.shp departamentos
+
+
+Encoding
+UTF-8
+Geometry
+Polygon (MultiPolygonZ)
+CRS
+EPSG:4326 - WGS 84 - Geographic
 
 
 
-Recursos adicionales
+# Recursos adicionales
+
 1- Estimaciones por cultivo y departamento del Ministerio de Agroindustria, Ganadería y Pesca.
 http://datosestimaciones.magyp.gob.ar/reportes.php?reporte=Estimaciones
 
