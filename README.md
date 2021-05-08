@@ -220,13 +220,17 @@ Band 10 Block=256x256 Type=Float32, ColorInterp=Undefined
 3- Funcion ConcatenateImages: https://www.orfeo-toolbox.org/CookBook/Applications/app_ConcatenateImages.html
 
 3.1- Creo layers nvdi
-python3 run_ndvi.py
+
+  python3 run_ndvi.py
 
 3.2- creo layers run_evi
-python3  run_evi.py
+
+  python3  run_evi.py
 
 4- concateno todos los nvdi en un solo file (muchos layers)
-python3 concat_ndvi.py
+
+  python3 concat_ndvi.py
 
 5- concateno todos los evi en un solo file (muchos layers)
-python3 concat_evi.py
+
+  python3 concat_evi.py
