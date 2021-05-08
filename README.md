@@ -11,8 +11,8 @@ Roque Saenz/ Peña Córdoba
 General Roca / Córdoba
 General Villegas/ Buenos Aires
 
-# Has. Maíz
-# Has. Soja
+ Has. Maíz
+ Has. Soja
 
 2. Mapa de las hectáreas sembradas con maíz y soja para cada uno de los partidos en
 estos dos formatos (elegir al menos uno de cada ítem):
