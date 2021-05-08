@@ -12,6 +12,8 @@ cmd = """bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile;  otbcli_Concatenate
 print(cmd)
 subprocess.run(cmd, shell=True)
 
+
+
 print("Ahora conectanamos la segunda midad del area")
 tile = '0000000000-0000010496'
 images_ndvi = sorted(glob.glob(
@@ -23,3 +25,6 @@ cmd = """bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile;  otbcli_Concatenate
     im=images_ndvi_otb, im_out=im_out_fname)
 print(cmd)
 subprocess.run(cmd, shell=True)
+
+
+#bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile;  otbcli_ConcatenateImages -il ./images/aoi/2020-10-01/0000000000-0000000000_evi.tif ./images/aoi/2020-11-01/0000000000-0000000000_evi.tif ./images/aoi/2020-12-01/0000000000-0000000000_evi.tif ./images/aoi/2021-01-01/0000000000-0000000000_evi.tif ./images/aoi/2021-02-20/0000000000-0000000000_evi.tif ./images/aoi/2021-03-17/0000000000-0000000000_evi.tif -out ./images/aoi/results/0000000000-0000000000_evi.tif'

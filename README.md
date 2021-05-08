@@ -98,6 +98,8 @@ Carpetas creadas:
 # 2- Verifico sistema de coordenadas y layers de las imagenes descargadas.
 
 - gdalinfo 0000000000-0000000000.tif
+
+
 Driver: GTiff/GeoTIFF
 Files: 0000000000-0000000000.tif
        0000000000-0000000000.tif.aux.xml
@@ -269,6 +271,10 @@ Ref: https://www.orfeo-toolbox.org/CookBook/Applications/app_ConcatenateImages.h
 
   python3 concat_evi.py
 
+chequeamos que esten todas las Bandas
+
+  gdalinfo -approx_stats  images/results/0000000000-0000010496_evi.tif
+
 
 # Descargar mascara de cultivos Inta.
 En donde puedo descartar areas que no son de cultivos.
@@ -328,6 +334,13 @@ Geometry
 Polygon (MultiPolygonZ)
 CRS
 EPSG:4326 - WGS 84 - Geographic
+
+
+# Tips
+Calcular el área en hectáreas para cada polígono y agregarlo con el nombre de area.
+Considerar la proyección EPSG:32721 para poder medir en metros.
+La relación de cálculo es: 1 m2 = 0.0001 hectáreas
+La función es $area*0.0001
 
 
 
