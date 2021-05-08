@@ -234,3 +234,12 @@ Band 10 Block=256x256 Type=Float32, ColorInterp=Undefined
 5- concateno todos los evi en un solo file (muchos layers)
 
   python3 concat_evi.py
+
+
+
+
+
+- Descargar mascara de cultivos Inta.
+mkdir mascara
+cd mascara
+wget https://storage.googleapis.com/gis2021-teledeteccion/tp-teledeteccion-2/images/mask_agri_aoi.tif
