@@ -1,4 +1,4 @@
-# uba-gis-tp2
+- Uba-gis-tp2
 
 calculo de áreas de cultivo de maíz y soja a partir de imágenes de satélites.
 
@@ -12,7 +12,7 @@ NDVI: (NIR-RED)/(NIR+RED) -> (B8-B4)/(B8+B4) -> (imb7-imb3)/(imb7+imb3)
 
 
 
-1- Descargo imagenes satelitales
+#1- Descargo imagenes satelitales
 
 Bucket (~17 GB): gs://gis2021-teledeteccion/tp-teledeteccion-2/images/
 
@@ -67,7 +67,7 @@ chmod a+x download-images.sh
 
 
 
-2- Verifico sistema de coordenadas y layers.
+#2- Verifico sistema de coordenadas y layers.
 
 $ gdalinfo 0000000000-0000000000.tif
 Driver: GTiff/GeoTIFF
@@ -214,10 +214,10 @@ Band 10 Block=256x256 Type=Float32, ColorInterp=Undefined
     STATISTICS_STDDEV=0.067971671312658
     STATISTICS_VALID_PERCENT=67.26
 
-####10 bandas en ID["EPSG",4326]] #####
+10 bandas en ID["EPSG",4326]]
 
 
-3- Funcion ConcatenateImages: https://www.orfeo-toolbox.org/CookBook/Applications/app_ConcatenateImages.html
+#3- Funcion ConcatenateImages: https://www.orfeo-toolbox.org/CookBook/Applications/app_ConcatenateImages.html
 
 3.1- Creo layers nvdi
 
@@ -227,11 +227,11 @@ Band 10 Block=256x256 Type=Float32, ColorInterp=Undefined
 
   python3  run_evi.py
 
-4- concateno todos los nvdi en un solo file (muchos layers)
+#4- concateno todos los nvdi en un solo file (muchos layers)
 
   python3 concat_ndvi.py
 
-5- concateno todos los evi en un solo file (muchos layers)
+#5- concateno todos los evi en un solo file (muchos layers)
 
   python3 concat_evi.py
 
@@ -239,7 +239,7 @@ Band 10 Block=256x256 Type=Float32, ColorInterp=Undefined
 
 
 
-- Descargar mascara de cultivos Inta.
+# Descargar mascara de cultivos Inta.
 mkdir mascara
 cd mascara
 wget https://storage.googleapis.com/gis2021-teledeteccion/tp-teledeteccion-2/images/mask_agri_aoi.tif
