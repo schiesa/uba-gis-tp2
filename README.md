@@ -298,17 +298,22 @@ degrees
 Recursos adicionales
 1- Estimaciones por cultivo y departamento del Ministerio de Agroindustria, Ganadería y Pesca.
 http://datosestimaciones.magyp.gob.ar/reportes.php?reporte=Estimaciones
+
 2- Estimaciones bolsas de cereales:
 Buenos Aires: https://www.bolsadecereales.com/estimaciones-informes
 Córdoba: https://www.bccba.org.ar/home/dptos-informacion/estadisticas-cultivos/
+
 3- Competencia clasificación de cultivos Fundación Sadosky (buscar código de los ganadores
 en GitHub)
 https://metadata.fundacionsadosky.org.ar/competition/22/
+
 4- Calendario de siembra y cosecha por cultivo en Argentina
 https://public.tableau.com/profile/gabi.ta1236#!/vizhome/Cultivosxprovincia/Cultivosporprovincias
+
 5- Mapa público de cultivos de INTA
 https://intainforma.inta.gob.ar/presentan-el-primer-mapa-nacional-de-cultivos-extensivos/
 http://geointa.inta.gob.ar/publico/MNC/
+
 6- Mapa público de cultivos MAGyP
 https://www.magyp.gob.ar/sitio/areas/estimaciones/acerca_de/mapa_cultivo_fina/index.php
 https://www.magyp.gob.ar/sitio/areas/estimaciones/acerca_de/mapa_cultivo_fina/_archivos/000
