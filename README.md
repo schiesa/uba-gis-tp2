@@ -399,12 +399,20 @@ Genero un layer con el departamento de Roque Saenz Pena.
 
 ogr2ogr -sql "SELECT * FROM departamentos WHERE nombre='PTE ROQUE SAENZ PENA'" -dialect sqlite ./departamentos/departamentos_rsp.shp ./departamentos/departamentos.shp
 
+ogr2ogr -sql "SELECT * FROM departamentos WHERE nombre='GENERAL VILLEGAS'" -dialect sqlite ./departamentos/departamentos_villegas.shp ./departamentos/departamentos.shp
+
+ogr2ogr -sql "SELECT * FROM departamentos WHERE nombre='GENERAL ROCA'" -dialect sqlite ./departamentos/departamentos_roca.shp ./departamentos/departamentos.shp
+
+
 Ahora, recortamos cada raster por cultivo y departamento.
 
 Calculo soja para ROQUE SAENZ PEÑA
 
 gdalwarp -cutline ./departamentos/departamentos_rsp.shp -crop_to_cutline  ~/images/results/results_merge_mask_soja.tif ~/images/results/results_merge_mask_soja_rsp.tif
 
+gdalwarp -cutline ./departamentos/departamentos_rsp.shp -crop_to_cutline  ~/images/results/results_merge_mask_soja.tif ~/images/results/results_merge_mask_soja_rsp.tif
+
+gdalwarp -cutline ./departamentos/departamentos_rsp.shp -crop_to_cutline  ~/images/results/results_merge_mask_soja.tif ~/images/results/results_merge_mask_soja_rsp.tif
 
 
 # Recursos adicionales
