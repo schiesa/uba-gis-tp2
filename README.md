@@ -465,6 +465,10 @@ gdalwarp -cutline ./departamentos/departamentos_roca.shp -crop_to_cutline  ./ima
 
 # Recursos adicionales
 
+convierte drive to url
+https://sites.google.com/site/gdocs2direct/home
+
+
 1- Estimaciones por cultivo y departamento del Ministerio de Agroindustria, Ganadería y Pesca.
 http://datosestimaciones.magyp.gob.ar/reportes.php?reporte=Estimaciones
 
