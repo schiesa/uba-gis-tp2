@@ -368,6 +368,8 @@ gdal_translate -ot UInt32 ./images/results/results_arbol_merge.tif ./images/resu
 
 ### CORRREGIR la mascara a las dimesiones de nuestar area.
 
+Me quedo con los de la mascara (falta cotar la mascara)
+
 gdal_calc.py \
 -A ./images/results/results_arbol_merge_temp.tif  \
 --A_band=1 \
@@ -376,6 +378,8 @@ gdal_calc.py \
 --calc="((B==1)*A)+((B==0)*0)" \
 --outfile ./images/results/results_merge_mask_temp.tif
 
+De los resultados mergeados me quedo con Soja
+
 
 gdal_calc.py \
 -A ./images/results/results_arbol_merge_temp.tif  \
@@ -383,13 +387,23 @@ gdal_calc.py \
 --calc="((A==1)*1 + (A!=1)*0)" \
 --outfile ./images/results/results_merge_mask_soja.tif
 
+De los resultados mergeados me quedo con otros
+
 gdal_calc.py \
 -A ./images/results/results_arbol_merge_temp.tif  \
 --A_band=1 \
 --calc="((A==3)*1 + (A!=3)*0)" \
 --outfile ./images/results/results_merge_mask_otros.tif
 
-ogr2ogr -sql "SELECT * FROM departamentos WHERE nombre='PTE ROQUE SAENZ PENA'" -dialect sqlite ./departamentos/repartamentos_rsp.shp ./departamentos/departamentos.shp
+Genero un layer con el departamento de Roque Saenz Pena.
+
+ogr2ogr -sql "SELECT * FROM departamentos WHERE nombre='PTE ROQUE SAENZ PENA'" -dialect sqlite ./departamentos/departamentos_rsp.shp ./departamentos/departamentos.shp
+
+Ahora, recortamos cada raster por cultivo y departamento.
+
+Calculo soja para ROQUE SAENZ PEÑA
+
+gdalwarp -cutline ./departamentos/departamentos_rsp.shp -crop_to_cutline  ~/images/results/results_merge_mask_soja.tif ~/images/results/results_merge_mask_soja_rsp.tif
 
 
 

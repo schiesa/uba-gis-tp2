@@ -44,7 +44,12 @@ bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile; otbcli_TrainVectorClassifier
                              -feat band_0 band_1 band_2 band_3 band_4 band_5'
 
 ###PREDICCION
+#otbcli_ImageClassifier
+
 bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile; otbcli_ImageClassifier -in ./images/results/0000000000-0000010496_evi.tif \
                        -imstat ./images/results/images_statistics_tail1.xml  \
                        -model ./images/results/modeloArbol.txt \
                        -out ./images/results/0000000000-0000010496_labeled_arbol.tif'
+
+
+#aplicar matriz de confusion considerando prediccion en tile 2 y puntos de verdad de campo.
