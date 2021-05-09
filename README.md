@@ -271,6 +271,10 @@ Ref: https://www.orfeo-toolbox.org/CookBook/Applications/app_ConcatenateImages.h
 
   python3 concat_evi.py
 
+# Importante
+ Las imagenes resultantes con los 2 segmentos de la imagen con los 6 layers c/u se encuentre en el Drive TP2.
+
+
 chequeamos que esten todas las Bandas
 
   gdalinfo -approx_stats  images/results/0000000000-0000010496_evi.tif
@@ -278,6 +282,8 @@ chequeamos que esten todas las Bandas
 
 # Descargar mascara de cultivos Inta.
 En donde puedo descartar areas que no son de cultivos.
+-rw-rw-r-- 1 sebastian sebastian 2179794948 May  8 20:14 0000000000-0000000000_evi.tif
+-rw-rw-r-- 1 sebastian sebastian 1114022244 May  8 20:24 0000000000-0000010496_evi.tif
 
 mkdir mascara
 
