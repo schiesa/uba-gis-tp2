@@ -383,7 +383,7 @@ gdal_calc.py \
 --calc="((A==3)*1 + (A!=3)*0)" \
 --outfile ./images/results/results_merge_mask_otros.tif
 
-
+ogr2ogr -sql "SELECT * FROM departamentos WHERE nombre='PTE ROQUE SAENZ PENA'" -dialect sqlite ./departamentos/repartamentos_rsp.shp ./departamentos/departamentos.shp
 
 
 
