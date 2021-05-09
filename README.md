@@ -342,6 +342,19 @@ Considerar la proyección EPSG:32721 para poder medir en metros.
 La relación de cálculo es: 1 m2 = 0.0001 hectáreas
 La función es $area*0.0001
 
+ogr2ogr -f GeoJSON ./data/buffer_50_clase3.geojson ./data/buffer_50_clase3.shp
+
+
+
+# Junto predicciones
+
+Unir los resultados en ‘results_merge.tif’
+
+
+gdal_merge.py -ot UInt32 -o ./images/results/results_arbol_merge.tif ./images/results/0000000000-0000000000_labeled_arbol.tif ./images/results/0000000000-0000010496_labeled_arbol.tif
+
+
+gdal_translate -ot UInt32 ./images/results/results_arbol_merge_temp.tif ./images/results/results_arbol_merge.tif
 
 
 
