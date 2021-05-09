@@ -356,6 +356,35 @@ gdal_merge.py -ot UInt32 -o ./images/results/results_arbol_merge.tif ./images/re
 
 gdal_translate -ot UInt32 ./images/results/results_arbol_merge_temp.tif ./images/results/results_arbol_merge.tif
 
+gdal_translate -ot UInt32 ./images/results/results_arbol_merge.tif ./images/results/results_arbol_merge_temp.tif
+
+
+
+### CORRREGIR la mascara a las dimesiones de nuestar area.
+
+gdal_calc.py \
+-A ./images/results/results_arbol_merge_temp.tif  \
+--A_band=1 \
+-B mascara/mask_agri_aoi.tif \
+--B_band=1 \
+--calc="((B==1)*A)+((B==0)*0)" \
+--outfile ./images/results/results_merge_mask_temp.tif
+
+
+gdal_calc.py \
+-A ./images/results/results_arbol_merge_temp.tif  \
+--A_band=1 \
+--calc="((A==1)*1 + (A!=1)*0)" \
+--outfile ./images/results/results_merge_mask_soja.tif
+
+gdal_calc.py \
+-A ./images/results/results_arbol_merge_temp.tif  \
+--A_band=1 \
+--calc="((A==3)*1 + (A!=3)*0)" \
+--outfile ./images/results/results_merge_mask_otros.tif
+
+
+
 
 
 # Recursos adicionales
