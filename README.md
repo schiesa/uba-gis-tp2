@@ -279,6 +279,24 @@ chequeamos que esten todas las Bandas
 
   gdalinfo -approx_stats  images/results/0000000000-0000010496_evi.tif
 
+# Filtros -Suabisado  NO APLICADO
+bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile; otbcli_Smoothing -in ~/results/aoi0_labeled.tif -out ~/results/aoi0_labeled_smooth.tif -type mean -type.mean.radius 2'
+Nota: radio 2 pixels.
+
+# Segmentacion NO APLICADO
+Para este documento nos va a interesar el algoritmo Meanshift (Fukunaga and Hostetler, 1975 y aquí para una introducción técnica).
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Descargar mascara de cultivos Inta.
 En donde puedo descartar areas que no son de cultivos.
@@ -310,6 +328,8 @@ EPSG:4326 - WGS 84 - Geographic
 Extent
 Unit
 degrees
+
+
 
 Reproyecto a otra proyeccion que este en metros para poder armar los buffers a 32721
 
@@ -366,7 +386,7 @@ gdal_translate -ot UInt32 ./images/results/results_arbol_merge.tif ./images/resu
 
 
 
-### CORRREGIR la mascara a las dimesiones de nuestar area.
+# la mascara a las dimesiones de nuestar area.
 
 Me quedo con los de la mascara (falta cotar la mascara)
 
@@ -387,6 +407,16 @@ gdal_calc.py \
 --calc="((A==1)*1 + (A!=1)*0)" \
 --outfile ./images/results/results_merge_mask_soja.tif
 
+
+me quedo con el maiz
+
+gdal_calc.py \
+-A ./images/results/results_arbol_merge_temp.tif  \
+--A_band=1 \
+--calc="((A==2)*1 + (A!=2)*0)" \
+--outfile ./images/results/results_merge_mask_maiz.tif
+
+
 De los resultados mergeados me quedo con otros
 
 gdal_calc.py \
@@ -406,13 +436,31 @@ ogr2ogr -sql "SELECT * FROM departamentos WHERE nombre='GENERAL ROCA'" -dialect 
 
 Ahora, recortamos cada raster por cultivo y departamento.
 
-Calculo soja para ROQUE SAENZ PEÑA
+Calculo para ROQUE SAENZ PEÑA
 
-gdalwarp -cutline ./departamentos/departamentos_rsp.shp -crop_to_cutline  ~/images/results/results_merge_mask_soja.tif ~/images/results/results_merge_mask_soja_rsp.tif
+gdalwarp -cutline ./departamentos/repartamentos_rsp.shp -crop_to_cutline  ./images/results/results_merge_mask_soja.tif ./images/results/results_merge_mask_soja_rsp.tif
 
-gdalwarp -cutline ./departamentos/departamentos_rsp.shp -crop_to_cutline  ~/images/results/results_merge_mask_soja.tif ~/images/results/results_merge_mask_soja_rsp.tif
+gdalwarp -cutline ./departamentos/repartamentos_rsp.shp -crop_to_cutline  ./images/results/results_merge_mask_maiz.tif ./images/results/results_merge_mask_maiz_rsp.tif
 
-gdalwarp -cutline ./departamentos/departamentos_rsp.shp -crop_to_cutline  ~/images/results/results_merge_mask_soja.tif ~/images/results/results_merge_mask_soja_rsp.tif
+gdalwarp -cutline ./departamentos/repartamentos_rsp.shp -crop_to_cutline  ./images/results/results_merge_mask_otros.tif ./images/results/results_merge_mask_otros_rsp.tif
+
+
+Calculo para GENERAL VILLEGAS
+
+gdalwarp -cutline ./departamentos/departamentos_villegas.shp -crop_to_cutline  ./images/results/results_merge_mask_soja.tif ./images/results/results_merge_mask_soja_villegas.tif
+
+gdalwarp -cutline ./departamentos/departamentos_villegas.shp -crop_to_cutline  ./images/results/results_merge_mask_maiz.tif ./images/results/results_merge_mask_maiz_villegas.tif
+
+gdalwarp -cutline ./departamentos/departamentos_villegas.shp -crop_to_cutline  ./images/results/results_merge_mask_otros.tif ./images/results/results_merge_mask_otros_villegas.tif
+
+Calculo para GENERAL ROCA
+
+gdalwarp -cutline ./departamentos/departamentos_roca.shp -crop_to_cutline  ./images/results/results_merge_mask_soja.tif ./images/results/results_merge_mask_soja_roca.tif
+
+gdalwarp -cutline ./departamentos/departamentos_roca.shp -crop_to_cutline  ./images/results/results_merge_mask_maiz.tif ./images/results/results_merge_mask_maiz_roca.tif
+
+gdalwarp -cutline ./departamentos/departamentos_roca.shp -crop_to_cutline  ./images/results/results_merge_mask_otros.tif ./images/results/results_merge_mask_otros_roca.tif
+
 
 
 # Recursos adicionales
