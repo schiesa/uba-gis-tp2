@@ -263,50 +263,46 @@ Ref: https://www.orfeo-toolbox.org/CookBook/Applications/app_ConcatenateImages.h
 
   python3  run_evi.py
 
+
 # 4- concateno todos los nvdi en un solo file (muchos layers)
 
   python3 concat_ndvi.py
 
 # 5- concateno todos los evi en un solo file (muchos layers)
 
-  python3 concat_evi.py
+- 5.1 python3 concat_evi.py
 
-# Importante
- Las imagenes resultantes con los 2 segmentos de la imagen con los 6 layers c/u se encuentre en el Drive TP2.
+- 5.2 Ahora Saco las carpetas de enero que son los meses en que no se distingue bien Soja de Maiz.
+
+python3 concat_evi_plus.py
+
+ - 5.3 Ahora chequeo el resultado:
+
+ Las imagenes resultantes con los 2 segmentos (tail) de la imagen con los 6 layers c/u se encuentre evi y ndvi.
+
+ Las imagenes resultantes con los 2 segmentos (tail) de la imagen con los 5 layers c/u para evi_plus.
 
 
 chequeamos que esten todas las Bandas
 
   gdalinfo -approx_stats  images/results/0000000000-0000010496_evi.tif
 
-# Filtros -Suabisado  NO APLICADO
+# 6- Filtros -Suabisado  (Lo prueba Susana)
 bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile; otbcli_Smoothing -in ~/results/aoi0_labeled.tif -out ~/results/aoi0_labeled_smooth.tif -type mean -type.mean.radius 2'
-Nota: radio 2 pixels.
 
-# Segmentacion NO APLICADO
+- Nota: radio 2 pixels.
+
+# 7- Segmentacion NO APLICADO
 Para este documento nos va a interesar el algoritmo Meanshift (Fukunaga and Hostetler, 1975 y aquí para una introducción técnica).
 
 
-
-
-
-
-
-
-
-
-
-
-
-# Descargar mascara de cultivos Inta.
+# 8- Descargar mascara de cultivos Inta.
 En donde puedo descartar areas que no son de cultivos.
 -rw-rw-r-- 1 sebastian sebastian 2179794948 May  8 20:14 0000000000-0000000000_evi.tif
 -rw-rw-r-- 1 sebastian sebastian 1114022244 May  8 20:24 0000000000-0000010496_evi.tif
 
 mkdir mascara
-
 cd mascara
-
 wget https://storage.googleapis.com/gis2021-teledeteccion/tp-teledeteccion-2/images/mask_agri_aoi.tif
 
 - Chequeo proyeccion
@@ -314,28 +310,28 @@ gdalinfo mask_agri_aoi.tif
 
 #ID["EPSG",4326]]
 
-# Verdad de Campo
+# 9- Verdad de Campo
 Descargo verdad_de_campo.zip y descomprimo en una carpeta.
 veo el detalle de los puntos observados:
+
 ogrinfo -so verdad_campo.shp verdad_campo
 
-veo en que esta proyectado
-ID["EPSG",4326]]
-- ogrinfo -so ./verdad_campo/verdad_campo.shp verdad_campo
+- veo en que si esta proyectado en ID["EPSG",4326]]
 
+ogrinfo -so ./verdad_campo/verdad_campo.shp verdad_campo
+
+Resultado:
 CRS
 EPSG:4326 - WGS 84 - Geographic
 Extent
 Unit
 degrees
 
-
-
-Reproyecto a otra proyeccion que este en metros para poder armar los buffers a 32721
+- Reproyecto a otra proyeccion que este en metros para poder armar los buffers a 32721
 
 ogr2ogr -f "ESRI Shapefile" -s_srs EPSG:4326 -t_srs EPSG:32721 verdad_campo/verdad_campo_32721.shp verdad_campo/verdad_campo.shp
 
-Chequeo layer:
+- Chequeo layer:
 ogrinfo -so  verdad_campo/verdad_campo_32721.shp verdad_campo_32721
 
 PROJCRS["WGS 84 / UTM zone 21S",
@@ -351,15 +347,18 @@ En metros como queria!
 # Departamentos
 Descargo departamentos.zip y descomprimo.
 
+- Chequeo proyeccion
 ogrinfo -so departamentos/departamentos.shp departamentos
 
-
+Resultado:
 Encoding
 UTF-8
 Geometry
 Polygon (MultiPolygonZ)
 CRS
 EPSG:4326 - WGS 84 - Geographic
+
+
 
 
 # Tips
@@ -370,26 +369,71 @@ La función es $area*0.0001
 
 ogr2ogr -f GeoJSON ./data/buffer_50_clase3.geojson ./data/buffer_50_clase3.shp
 
+# 9- Ahora utilizo los scripts para generar las clasificaciones
+
+- 9.1 Corro 100 arboles con :
+./arboles-multiple-deph.py
+De ahi mido los Kappa y me quedo con profundidad 11 (no 5 como el ejemplo)
+
+- 9.2 Corro 1 arbol con los parametros optimos asi me quedo con todos los datos.
+./arbol.sh
+
+- 9.3 Corro RandomForest (con evi_plus):
+./randomforest.sh
+
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: Computing model file : ./images/results/rfModel.txt
+Training model...: 100% [**************************************************] (0s)
+Validation...: 100% [**************************************************] (0s)
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: Predicted list size : 1893
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: ValidationLabeledListSample size : 1893
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: Training performances:
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: Confusion matrix (rows = reference labels, columns = produced labels):
+    [1] [2] [3]
+[1] 631   0   0
+[2]   0 628   3
+[3]   0   2 629
+
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: Precision of class [1] vs all: 1
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: Recall of class    [1] vs all: 1
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: F-score of class   [1] vs all: 1
+
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: Precision of class [2] vs all: 0.996825
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: Recall of class    [2] vs all: 0.995246
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: F-score of class   [2] vs all: 0.996035
+
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: Precision of class [3] vs all: 0.995253
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: Recall of class    [3] vs all: 0.99683
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: F-score of class   [3] vs all: 0.996041
+
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: Global performance, Kappa index: 0.996038
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: mapOfIndicesValid[0] = 1
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: mapOfIndicesValid[1] = 2
+2021-05-12 06:30:19 (INFO) TrainVectorClassifier: mapOfIndicesValid[2] = 3
+
+Clasifica muy bien!!!!
 
 
-# Junto predicciones
+# 10 - Junto predicciones
 
 Unir los resultados en ‘results_merge.tif’
 
+- 10.1 Junto resultados de arboles
 
 gdal_merge.py -ot UInt32 -o ./images/results/results_arbol_merge.tif ./images/results/0000000000-0000000000_labeled_arbol.tif ./images/results/0000000000-0000010496_labeled_arbol.tif
 
-
-gdal_translate -ot UInt32 ./images/results/results_arbol_merge_temp.tif ./images/results/results_arbol_merge.tif
-
+No recuerdo cual era el origen y destino pero es uno de estos 2 comandos:
 gdal_translate -ot UInt32 ./images/results/results_arbol_merge.tif ./images/results/results_arbol_merge_temp.tif
 
+- 10.2 Junto resultados de RandomForest
+gdal_merge.py -ot UInt32 -o ./images/results/results_rf_merge.tif ./images/results/0000000000-0000000000_labeled_rf.tif ./images/results/0000000000-0000010496_labeled_rf.tif
+
+gdal_translate -ot UInt32 ./images/results/results_rf_merge.tif ./images/results/results_rf_merge_temp.tif
 
 
-# la mascara a las dimesiones de nuestar area.
 
-Me quedo con los de la mascara (falta cotar la mascara)
+# 11 - Aplico la mascara del INTA que tiene las dimesiones de nuestra area y la misma resolucion (corregido por el profe)
 
+- 11.1 Arbol
 gdal_calc.py \
 -A ./images/results/results_arbol_merge_temp.tif  \
 --A_band=1 \
@@ -397,6 +441,19 @@ gdal_calc.py \
 --B_band=1 \
 --calc="((B==1)*A)+((B==0)*0)" \
 --outfile ./images/results/results_merge_mask_temp.tif
+
+- 11.2 RandomForest
+gdal_calc.py \
+-A ./images/results/results_rf_merge_temp.tif  \
+--A_band=1 \
+-B mascara/mask_agri_aoi.tif \
+--B_band=1 \
+--calc="((B==1)*A)+((B==0)*0)" \
+--outfile ./images/results/results_rf_merge_masked.tif
+
+
+Hasta aqui tengo todo clasificado, el que tiene la mascara , ofusca la posibilidad de utilizar segmentacion, por lo que voy a utilizar la mascara mas adelante.
+
 
 De los resultados mergeados me quedo con Soja
 
@@ -464,6 +521,14 @@ gdalwarp -cutline ./departamentos/departamentos_roca.shp -crop_to_cutline  ./ima
 
 
 # Recursos adicionales
+Procesamiento de datos vectoriales
+https://docs.google.com/document/d/1UKcRoR7ajk1mEcmdqxk2lwx8spcXxez9UmP1k6Gi1dw/edit#heading=h.ts73213yd7m3
+
+Bitácora ejercicios teledetección
+https://docs.google.com/document/d/1zE4oFIGIQ0yXZJmgxsoPdYhyew2kUoMXQmr5WwbEMwY/edit
+
+https://docs.qgis.org/3.16/en/docs/training_manual/rasters/data_manipulation.html
+
 
 convierte drive to url
 https://sites.google.com/site/gdocs2direct/home

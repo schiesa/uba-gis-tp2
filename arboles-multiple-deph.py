@@ -4,7 +4,7 @@ import subprocess
 import glob
 import os
 
-max_depth = 100
+max_depth = 50
 for i in range(4,max_depth):
     if i != max_depth -1:
         concat = ""
@@ -21,6 +21,3 @@ for i in range(4,max_depth):
 -feat band_0 band_1 band_2 band_3 band_4 band_5' | grep -oP '(?<=Kappa index: )[0-9]+\.[0-9]+' >> ./images/results/kappas_trees_dt.txt {concat} """.format(depth=i, concat=concat)
     print(cmd)
     subprocess.run(cmd, shell=True)
-
-
-    

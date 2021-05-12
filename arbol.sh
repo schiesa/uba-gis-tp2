@@ -38,10 +38,12 @@ bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile; otbcli_TrainVectorClassifier
                              -io.stats ./images/results/images_statistics_tail1.xml \
                              -cfield id3 \
                              -classifier dt \
-                             -classifier.dt.max 5 \
+                             -classifier.dt.max 11 \
                              -io.out ./images/results/modeloArbol.txt \
                              -io.confmatout ./images/results/ConfusionMatrixArbol.csv \
                              -feat band_0 band_1 band_2 band_3 band_4 band_5'
+
+
 
 ###PREDICCION
 #otbcli_ImageClassifier
