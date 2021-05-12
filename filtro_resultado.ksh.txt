@@ -1,0 +1,24 @@
+## Filtro suavizado sobre el resultado
+
+bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile; otbcli_Smoothing -in ./images/results/0000000000-0000000000_labeled_arbol.tif -out ./images/results/0000000000-0000000000_labeled_arbol_smooth_r10.tif -type mean -type.mean.radius 10'
+
+#aplicar matriz de confusion considerando prediccion en tile 1 y puntos de verdad de campo.
+
+bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile;
+otbcli_ComputeConfusionMatrix -in ./images/results/0000000000-0000000000_labeled_arbol_smooth_r10.tif -out ConfusionMatrix_sr10.csv \
+-ref vector \
+-ref.vector.in ~/buffer/buffer_50_4326.geojson \
+-ref.vector.field id3 \
+-ref.vector.nodata 0'
+
+
+bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile; otbcli_Smoothing -in ./images/results/0000000000-0000000000_labeled_arbol.tif -out ./images/results/0000000000-0000000000_labeled_arbol_smooth_g.tif -type gaussian'
+
+#aplicar matriz de confusion considerando prediccion en tile 1 y puntos de verdad de campo.
+
+bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile;
+otbcli_ComputeConfusionMatrix -in ./images/results/0000000000-0000000000_labeled_arbol_smooth_g.tif -out ConfusionMatrix_sg.csv \
+-ref vector \
+-ref.vector.in ~/buffer/buffer_50_4326.geojson \
+-ref.vector.field id3 \
+-ref.vector.nodata 0'
