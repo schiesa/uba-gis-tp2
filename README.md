@@ -1,4 +1,4 @@
-# Uba-gis-tp2
+# UBA-GIS-TP2
 
 El objetivo de este trabajo práctico es estimar la cantidad
 de hectáreas sembradas con maíz y soja para la campaña 20/21 en los partido de Roque
@@ -287,19 +287,40 @@ chequeamos que esten todas las Bandas
 
   gdalinfo -approx_stats  images/results/0000000000-0000010496_evi.tif
 
-# 6- Filtros -Suabisado  (Lo prueba Susana)
-bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile; otbcli_Smoothing -in ~/results/aoi0_labeled.tif -out ~/results/aoi0_labeled_smooth.tif -type mean -type.mean.radius 2'
+# 6- Filtros -Suavisado  
+bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile; otbcli_Smoothing -in ./images/results/0000000000-0000000000_labeled_arbol.tif -out ./images/results/0000000000-0000000000_labeled_arbol_smooth_r2.tif -type mean -type.mean.radius 2'
 
-- Nota: radio 2 pixels.
+- 6.1 aplicar matriz de confusion considerando prediccion en tile 1 y puntos de verdad de campo.
 
-# 7- Segmentacion NO APLICADO
+bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile;
+otbcli_ComputeConfusionMatrix -in ./images/results/0000000000-0000000000_labeled_arbol_smooth_r2.tif -out ConfusionMatrix_sr2.csv \
+-ref vector \
+-ref.vector.in ~/buffer/buffer_50_4326.geojson \
+-ref.vector.field id3 \
+-ref.vector.nodata 0'
+
+
+bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile; otbcli_Smoothing -in ./images/results/0000000000-0000000000_labeled_arbol.tif -out ./images/results/0000000000-0000000000_labeled_arbol_smooth_g.tif -type gaussian'
+
+- 6.2 aplicar matriz de confusion considerando prediccion en tile 1 y puntos de verdad de campo.
+
+bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile;
+otbcli_ComputeConfusionMatrix -in ./images/results/0000000000-0000000000_labeled_arbol_smooth_g.tif -out ConfusionMatrix_sg.csv \
+-ref vector \
+-ref.vector.in ~/buffer/buffer_50_4326.geojson \
+-ref.vector.field id3 \
+-ref.vector.nodata 0'
+
+- Nota: radio 2 pixels. (No 10 como tenia el tutorial)
+- Nota: Deberia suavisar el arbol generado sin Enero.
+
+# 7- Segmentacion
 Para este documento nos va a interesar el algoritmo Meanshift (Fukunaga and Hostetler, 1975 y aquí para una introducción técnica).
+Lo aplico mas adelante cuando tengo todo junto.
 
 
 # 8- Descargar mascara de cultivos Inta.
 En donde puedo descartar areas que no son de cultivos.
--rw-rw-r-- 1 sebastian sebastian 2179794948 May  8 20:14 0000000000-0000000000_evi.tif
--rw-rw-r-- 1 sebastian sebastian 1114022244 May  8 20:24 0000000000-0000010496_evi.tif
 
 mkdir mascara
 cd mascara
@@ -341,10 +362,10 @@ PROJCRS["WGS 84 / UTM zone 21S",
                 LENGTHUNIT["metre",1]]],
                 ID["EPSG",32721]]
 
-En metros como queria!
+En metros como queriamos!
 
 
-# Departamentos
+# 10 - Departamentos
 Descargo departamentos.zip y descomprimo.
 
 - Chequeo proyeccion
@@ -359,8 +380,6 @@ CRS
 EPSG:4326 - WGS 84 - Geographic
 
 
-
-
 # Tips
 Calcular el área en hectáreas para cada polígono y agregarlo con el nombre de area.
 Considerar la proyección EPSG:32721 para poder medir en metros.
@@ -369,16 +388,16 @@ La función es $area*0.0001
 
 ogr2ogr -f GeoJSON ./data/buffer_50_clase3.geojson ./data/buffer_50_clase3.shp
 
-# 9- Ahora utilizo los scripts para generar las clasificaciones
+# 11- Ahora utilizo los scripts para generar las clasificaciones
 
-- 9.1 Corro 100 arboles con :
+- 11.1 Corro 100 arboles con :
 ./arboles-multiple-deph.py
 De ahi mido los Kappa y me quedo con profundidad 11 (no 5 como el ejemplo)
 
-- 9.2 Corro 1 arbol con los parametros optimos asi me quedo con todos los datos.
+- 11.2 Corro 1 arbol con los parametros optimos asi me quedo con todos los datos.
 ./arbol.sh
 
-- 9.3 Corro RandomForest (con evi_plus):
+- 11.3 Corro RandomForest (con evi_plus):
 ./randomforest.sh
 
 2021-05-12 06:30:19 (INFO) TrainVectorClassifier: Computing model file : ./images/results/rfModel.txt
@@ -413,7 +432,7 @@ Validation...: 100% [**************************************************] (0s)
 Clasifica muy bien!!!!
 
 
-# 10 - Junto predicciones
+# 12 - Junto predicciones
 
 Unir los resultados en ‘results_merge.tif’
 
@@ -431,7 +450,7 @@ gdal_translate -ot UInt32 ./images/results/results_rf_merge.tif ./images/results
 
 
 
-# 11 - Aplico la mascara del INTA que tiene las dimesiones de nuestra area y la misma resolucion (corregido por el profe)
+# 13 - Aplico la mascara del INTA que tiene las dimesiones de nuestra area y la misma resolucion (corregido por el profe)
 
 - 11.1 Arbol
 gdal_calc.py \
@@ -452,9 +471,9 @@ gdal_calc.py \
 --outfile ./images/results/results_rf_merge_masked.tif
 
 
-Hasta aqui tengo todo clasificado, el que tiene la mascara , ofusca la posibilidad de utilizar segmentacion, por lo que voy a utilizar la mascara mas adelante.
+# Hasta aqui tengo todo clasificado, el que tiene la mascara , ofusca la posibilidad de utilizar segmentacion, por lo que voy a utilizar la mascara mas adelante.
 
-
+# 14 - Calculo por Pixel
 De los resultados mergeados me quedo con Soja
 
 
@@ -519,6 +538,76 @@ gdalwarp -cutline ./departamentos/departamentos_roca.shp -crop_to_cutline  ./ima
 gdalwarp -cutline ./departamentos/departamentos_roca.shp -crop_to_cutline  ./images/results/results_merge_mask_otros.tif ./images/results/results_merge_mask_otros_roca.tif
 
 
+- Pasar los resultados del ejercicio anterior a hectáreas.
+
+Cada píxel mide aproximadamente 20 metros de lado, por lo que cada uno mide entonces 400 metros cuadrados. Esto equivale a 0.04 hectáreas.
+
+Veo resultados
+python3 cuenta-pixels.py
+
+ROQUE SAENZ PEÑA
+Soja 5585065 pixels 223402.6 Hectareas
+Maiz 10302749  pixels 412109.96  Hectareas
+
+GENERAL VILLEGAS
+Soja 4488394  pixels 179535.76 Hectareas
+Maiz 9097184  pixels 363887.36  Hectareas
+
+GENERAL ROCA
+Soja 7091860  pixels 283674.4  Hectareas
+Maiz 19629041 785161.64 Hectareas
+
+
+# 15 - Ahora vamos por la segmentacion
+
+15.1 Segmentar una porción del tile 0000000000-0000000000 en base a un área de interés. Descargar el polígono desde este link:
+
+mkdir segmentos
+wget https://storage.googleapis.com/gis2021-teledeteccion/tp-teledeteccion-2/segs/aoi_segs_clip.zip
+cd segmentos/
+unzip aoi_segs_clip.zip
+rm aoi_segs_clip.zip
+cd ..
+
+NOTA: Es un rectangulo que abarca los 3 departamentos que nos interesa.(sin mascara para que se puede segmentar bien)
+
+15.2 Recortamos la imagen para no segmentar todo.
+
+Primero recortamos la imagen que viene del punto 12.:
+
+gdalwarp -t_srs EPSG:4326 -of GTiff -cutline ./segmentos/aoi_segs.shp -cl aoi_segs -crop_to_cutline ./images/results/results_rf_merge_temp.tif  ./images/results/results_rf_merge_clip.tif
+
+
+- 15.3 Segmentamos con Meanshift.
+
+MeanShiftSmoothing:
+
+bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile; otbcli_MeanShiftSmoothing \
+-in  ./images/results/results_rf_merge_clip.tif \
+-fout  ./images/results/results_rf_merge_clip_smooth.tif \
+-foutpos  ./images/results/results_rf_merge_clip_smooth_pos.tif \
+-spatialr 5 \
+-ranger 0.1 \
+-maxiter 100'
+
+15.4 LSMSSegmentation
+bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile; otbcli_LSMSSegmentation -in ./images/results/results_rf_merge_clip_smooth.tif \
+-inpos ./images/results/results_rf_merge_clip_smooth_pos.tif \
+-out ./images/results/evi_plus_clip_seg.tif \           
+-spatialr 5 \
+-ranger 0.1 \
+-minsize 5 \
+-tilesizex 1024 \
+-tilesizey 1024'
+
+
+- 15.4 LSMSVectorization
+bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile; otbcli_LSMSVectorization -in ./images/results/results_rf_merge_clip.tif  \
+  -inseg ./images/results/evi_plus_clip_seg.tif  \
+  -out ./images/results/evi_plus_clip_seg.shp'
+
+
+
 
 # Recursos adicionales
 Procesamiento de datos vectoriales
@@ -529,10 +618,8 @@ https://docs.google.com/document/d/1zE4oFIGIQ0yXZJmgxsoPdYhyew2kUoMXQmr5WwbEMwY/
 
 https://docs.qgis.org/3.16/en/docs/training_manual/rasters/data_manipulation.html
 
-
 convierte drive to url
 https://sites.google.com/site/gdocs2direct/home
-
 
 1- Estimaciones por cultivo y departamento del Ministerio de Agroindustria, Ganadería y Pesca.
 http://datosestimaciones.magyp.gob.ar/reportes.php?reporte=Estimaciones
