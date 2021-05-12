@@ -606,7 +606,7 @@ bash -c 'source ~/OTB-7.2.0-Linux64/otbenv.profile; otbcli_LSMSVectorization -in
   -inseg ./images/results/evi_plus_clip_seg.tif  \
   -out ./images/results/evi_plus_clip_seg.shp'
 
-
+# TENGO QUE REVISAR LA SEGMENTACION!!!!! CORRE TODO PERO TENGO UN ERROR CON EL AREA!! Creo que el clip  es un subsegmento de prueba
 
 
 # Recursos adicionales
