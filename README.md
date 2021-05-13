@@ -319,7 +319,7 @@ Para este documento nos va a interesar el algoritmo Meanshift (Fukunaga and Host
 Lo aplico mas adelante cuando tengo todo junto.
 
 
-# 8- Descargar mascara de cultivos Inta.
+# 8- Descargar mascara de cultivos INTA.
 En donde puedo descartar areas que no son de cultivos.
 
 mkdir mascara
@@ -474,7 +474,7 @@ gdal_calc.py \
 # Hasta aqui tengo todo clasificado, el que tiene la mascara , ofusca la posibilidad de utilizar segmentacion, por lo que voy a utilizar la mascara mas adelante.
 
 # 14 - Calculo por Pixel
-De los resultados mergeados me quedo con Soja
+-14.1 De los resultados mergeados me quedo con Soja
 
 
 gdal_calc.py \
@@ -556,6 +556,48 @@ Maiz 9097184  pixels 363887.36  Hectareas
 GENERAL ROCA
 Soja 7091860  pixels 283674.4  Hectareas
 Maiz 19629041 785161.64 Hectareas
+
+14.2 Random Forest por PIXEL
+
+gdal_calc.py -A ./images/results/results_rf_merge_temp.tif --A_band=1 --calc="((A==1)*1 + (A!=1)*0)" \
+--outfile ./images/results/rf_results_merge_mask_soja.tif
+
+gdal_calc.py -A ./images/results/results_rf_merge_temp.tif --A_band=1 --calc="((A==2)*1 + (A!=2)*0)" \
+--outfile ./images/results/results_merge_mask_maiz.tif
+
+gdal_calc.py -A ./images/results/results_rf_merge_temp.tif --A_band=1 --calc="((A==3)*1 + (A!=3)*0)" --outfile ./images/results/rf_results_merge_mask_otros.tif
+
+gdalwarp -cutline ./departamentos/repartamentos_rsp.shp -crop_to_cutline ./images/results/rf_results_merge_mask_soja.tif ./images/results/rf_results_merge_mask_soja_rsp.tif
+
+gdalwarp -cutline ./departamentos/repartamentos_rsp.shp -crop_to_cutline ./images/results/rf_results_merge_mask_maiz.tif ./images/results/rf_results_merge_mask_maiz_rsp.tif
+
+
+Calculo para GENERAL VILLEGAS
+
+gdalwarp -cutline ./departamentos/departamentos_villegas.shp -crop_to_cutline ./images/results/rf_results_merge_mask_soja.tif ./images/results/rf_results_merge_mask_soja_villegas.tif
+
+gdalwarp -cutline ./departamentos/departamentos_villegas.shp -crop_to_cutline ./images/results/rf_results_merge_mask_maiz.tif ./images/results/rf_results_merge_mask_maiz_villegas.tif
+
+
+#Calculo para GENERAL ROCA
+
+gdalwarp -cutline ./departamentos/departamentos_roca.shp -crop_to_cutline ./images/results/rf_results_merge_mask_soja.tif ./images/results/rf_results_merge_mask_soja_roca.tif
+
+gdalwarp -cutline ./departamentos/departamentos_roca.sh
+
+- Totales x pixel por RF
+ROQUE SAENZ PEÑA
+Soja 4521758 pixels 180870.32 Hectareas
+Maiz 11431863  pixels 457274.52  Hectareas
+
+GENERAL VILLEGAS
+Soja 2624845  pixels 104993.8 Hectareas
+Maiz 12060363  pixels 482414.52  Hectareas
+
+GENERAL ROCA
+Soja 5831862  pixels 233274.48  Hectareas
+Maiz 21284898 pixels 851395.92 Hectareas
+
 
 
 # 15 - Ahora vamos por la segmentacion
