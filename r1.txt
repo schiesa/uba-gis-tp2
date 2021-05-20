@@ -1,0 +1,22 @@
+2021-05-19 21:55:39 (INFO) TrainImagesClassifier: Confusion matrix (rows = reference labels, columns = produced labels):
+    [1] [2] [3]
+[1] 491  13   0
+[2]  13 457  34
+[3]  12  84 408
+
+2021-05-19 21:55:39 (INFO) TrainImagesClassifier: Precision of class [1] vs all: 0.95155
+2021-05-19 21:55:39 (INFO) TrainImagesClassifier: Recall of class    [1] vs all: 0.974206
+2021-05-19 21:55:39 (INFO) TrainImagesClassifier: F-score of class   [1] vs all: 0.962745
+
+2021-05-19 21:55:39 (INFO) TrainImagesClassifier: Precision of class [2] vs all: 0.82491
+2021-05-19 21:55:39 (INFO) TrainImagesClassifier: Recall of class    [2] vs all: 0.906746
+2021-05-19 21:55:39 (INFO) TrainImagesClassifier: F-score of class   [2] vs all: 0.863894
+
+2021-05-19 21:55:39 (INFO) TrainImagesClassifier: Precision of class [3] vs all: 0.923077
+2021-05-19 21:55:39 (INFO) TrainImagesClassifier: Recall of class    [3] vs all: 0.809524
+2021-05-19 21:55:39 (INFO) TrainImagesClassifier: F-score of class   [3] vs all: 0.862579
+
+2021-05-19 21:55:39 (INFO) TrainImagesClassifier: Global performance, Kappa index: 0.845238
+2021-05-19 21:55:39 (INFO) TrainImagesClassifier: mapOfIndicesValid[0] = 1
+2021-05-19 21:55:39 (INFO) TrainImagesClassifier: mapOfIndicesValid[1] = 2
+2021-05-19 21:55:39 (INFO) TrainImagesClassifier: mapOfIndicesValid[2] = 3

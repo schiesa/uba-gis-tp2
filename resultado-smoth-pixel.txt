@@ -1,0 +1,12 @@
+ROQUE SAENZ PEÑA
+Soja  2159625.0  pixels  86385.0  Hectareas
+Maiz  5233707.0  pixels  209348.28  Hectareas
+
+GENERAL VILLEGAS
+Soja  780581.0  pixels  31223.24  Hectareas
+Maiz  5290879.0  pixels  211635.16  Hectareas
+
+GENERAL ROCA
+Soja  2371617.0  pixels  94864.68000000001  Hectareas
+Maiz  11172326.0  pixels  446893.04000000004  Hectareas
+
