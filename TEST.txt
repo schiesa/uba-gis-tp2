@@ -1,0 +1,25 @@
+gdal_calc.py -A ./images/results/results_rf_merge_temp.tif --A_band=1 --calc="((A==1)*1 + (A!=1)*0)" \
+--outfile ./images/results/rf_results_merge_mask_soja.tif
+
+gdal_calc.py -A ./images/results/results_rf_merge_temp.tif --A_band=1 --calc="((A==2)*1 + (A!=2)*0)" \
+--outfile ./images/results/results_merge_mask_maiz.tif
+
+gdal_calc.py -A ./images/results/results_rf_merge_temp.tif --A_band=1 --calc="((A==3)*1 + (A!=3)*0)" --outfile ./images/results/rf_results_merge_mask_otros.tif
+
+gdalwarp -cutline ./departamentos/departamentos_rsp.shp -crop_to_cutline ./images/results/rf_results_merge_mask_soja.tif ./images/results/rf_results_merge_mask_soja_rsp.tif
+
+gdalwarp -cutline ./departamentos/departamentos_rsp.shp -crop_to_cutline ./images/results/rf_results_merge_mask_maiz.tif ./images/results/rf_results_merge_mask_maiz_rsp.tif
+
+
+Calculo para GENERAL VILLEGAS
+
+gdalwarp -cutline ./departamentos/departamentos_villegas.shp -crop_to_cutline ./images/results/rf_results_merge_mask_soja.tif ./images/results/rf_results_merge_mask_soja_villegas.tif
+
+gdalwarp -cutline ./departamentos/departamentos_villegas.shp -crop_to_cutline ./images/results/rf_results_merge_mask_maiz.tif ./images/results/rf_results_merge_mask_maiz_villegas.tif
+
+
+#Calculo para GENERAL ROCA
+
+gdalwarp -cutline ./departamentos/departamentos_roca.shp -crop_to_cutline ./images/results/rf_results_merge_mask_soja.tif ./images/results/rf_results_merge_mask_soja_roca.tif
+
+gdalwarp -cutline ./departamentos/departamentos_roca.shp -crop_to_cutline ./images/results/rf_results_merge_mask_maiz.tif ./images/results/rf_results_merge_mask_maiz_roca.tif
