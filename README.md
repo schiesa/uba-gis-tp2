@@ -438,6 +438,7 @@ Clasifica muy bien!!!!
 
 # 12 - Junto predicciones
 
+
 Unir los resultados en ‘results_merge.tif’
 
 - 10.1 Junto resultados de arboles
@@ -451,6 +452,35 @@ gdal_translate -ot UInt32 ./images/results/results_arbol_merge.tif ./images/resu
 gdal_merge.py -ot UInt32 -o ./images/results/results_rf_merge.tif ./images/results/0000000000-0000000000_labeled_rf.tif ./images/results/0000000000-0000010496_labeled_rf.tif
 
 gdal_translate -ot UInt32 ./images/results/results_rf_merge.tif ./images/results/results_rf_merge_temp.tif
+
+
+12 - 2. Opcion de Juntar los 2 tail y corro un arbol con el 80/20.
+
+./randomforest-complete.sh
+
+
+[1] [2] [3]
+[1] 956   0  32
+[2] 454  12 522
+[3]  51   9 928
+
+2021-05-19 22:59:23 (INFO) TrainImagesClassifier: Precision of class [1] vs all: 0.654346
+2021-05-19 22:59:23 (INFO) TrainImagesClassifier: Recall of class    [1] vs all: 0.967611
+2021-05-19 22:59:23 (INFO) TrainImagesClassifier: F-score of class   [1] vs all: 0.780727
+
+2021-05-19 22:59:23 (INFO) TrainImagesClassifier: Precision of class [2] vs all: 0.571429
+2021-05-19 22:59:23 (INFO) TrainImagesClassifier: Recall of class    [2] vs all: 0.0121457
+2021-05-19 22:59:23 (INFO) TrainImagesClassifier: F-score of class   [2] vs all: 0.0237859
+
+2021-05-19 22:59:23 (INFO) TrainImagesClassifier: Precision of class [3] vs all: 0.626181
+2021-05-19 22:59:23 (INFO) TrainImagesClassifier: Recall of class    [3] vs all: 0.939271
+2021-05-19 22:59:23 (INFO) TrainImagesClassifier: F-score of class   [3] vs all: 0.751417
+
+2021-05-19 22:59:23 (INFO) TrainImagesClassifier: Global performance, Kappa index: 0.459514
+2021-05-19 22:59:23 (INFO) TrainImagesClassifier: mapOfIndicesValid[0] = 1
+2021-05-19 22:59:23 (INFO) TrainImagesClassifier: mapOfIndicesValid[1] = 2
+2021-05-19 22:59:23 (INFO) TrainImagesClassifier: mapOfIndicesValid[2] = 3
+
 
 
 
