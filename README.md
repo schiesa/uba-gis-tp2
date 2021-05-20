@@ -251,6 +251,10 @@ EPSG:4326 - WGS 84 - Geographic
 Unit
 degrees
 
+- Convierto de Shapefile a geojson
+ogr2ogr -f GeoJSON ./buffer/buffer_50_4326.geojson ./buffer/buffer_50_4326.shp
+
+
 
 # 3- Funcion ConcatenateImages:
 Ref: https://www.orfeo-toolbox.org/CookBook/Applications/app_ConcatenateImages.html
